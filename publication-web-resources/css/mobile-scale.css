@@ -1,0 +1,59 @@
+/* =========================================================
+   CENTERED LETTERBOX (SAFE & PROFESSIONAL)
+   ========================================================= */
+
+html, body {
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100%;
+  height: 100%;
+  background: #0f3a5d;
+  overflow: hidden;
+}
+
+/* DEFAULT DESKTOP: CENTER WITHOUT SCALE */
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* PUBLICATION STAGE */
+#publication {
+  width: 1440px;
+  height: 810px;
+  background: transparent;
+}
+
+/* ===== MOBILE / TOUCH DEVICE ===== */
+@media (pointer: coarse) {
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #publication {
+    transform-origin: center center;
+    transform: scale(
+      min(100vw / 1440, 100vh / 810)
+    );
+  }
+
+  /* Portrait hint */
+  @media (orientation: portrait) {
+    body::before {
+      content: "Rotate your device to landscape for best experience";
+      position: fixed;
+      inset: 0;
+      background: #000;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-size: 16px;
+      z-index: 9999;
+    }
+  }
+}

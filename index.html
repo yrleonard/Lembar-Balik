@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link
+    href="publication-web-resources/css/main.css"
+    rel="stylesheet"
+    type="text/css"
+  >
+
+  <script
+    src="publication-web-resources/script/main.js"
+    type="text/javascript">
+  </script>
+</head>
+
+<body onload="showHideArrows()">
+
+  <!-- VIEWER -->
+  <div class="viewer-wrapper">
+
+    <iframe
+      id="contentIFrame"
+      class="contentIframeClass"
+      src="publication-web-resources/html/publication.html"
+      onload="showHideArrows()">
+    </iframe>
+
+    <iframe
+      id="dummyIFrame"
+      class="dummyFrameClass">
+    </iframe>
+
+    <div class="prev" onclick="showPreviousPage()">&#10094;</div>
+    <div class="next" onclick="showNextPage()">&#10095;</div>
+
+  </div>
+
+  <!-- FULLSCREEN BUTTON -->
+  <button id="fsBtn" class="fs-btn">⛶ Fullscreen</button>
+
+<script>
+  const fsBtn = document.getElementById("fsBtn");
+  let hideTimer = null;
+
+  /* ===============================
+     UPDATE LABEL BUTTON
+     =============================== */
+  function updateFsButton() {
+    if (document.fullscreenElement) {
+      fsBtn.textContent = "⛶ Exit Fullscreen";
+    } else {
+      fsBtn.textContent = "⛶ Fullscreen";
+    }
+  }
+
+  /* ===============================
+     TOGGLE FULLSCREEN
+     =============================== */
+  function toggleFullscreen() {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen();
+    } else {
+      document.exitFullscreen();
+    }
+  }
+
+  /* ===============================
+     AUTO HIDE LOGIC
+     =============================== */
+  function showButtonTemporarily() {
+    fsBtn.classList.remove("hidden");
+
+    clearTimeout(hideTimer);
+    hideTimer = setTimeout(() => {
+      fsBtn.classList.add("hidden");
+    }, 3000);
+  }
+
+  /* ===============================
+     EVENT LISTENERS
+     =============================== */
+  fsBtn.addEventListener("click", () => {
+    toggleFullscreen();
+    showButtonTemporarily();
+  });
+
+  document.addEventListener("fullscreenchange", updateFsButton);
+
+  // Mouse / touch activity
+  document.addEventListener("mousemove", showButtonTemporarily);
+  document.addEventListener("touchstart", showButtonTemporarily);
+
+  // Keyboard shortcut: F
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "f" || e.key === "F") {
+      e.preventDefault();
+      toggleFullscreen();
+      showButtonTemporarily();
+    }
+  });
+
+  // Initial state
+  updateFsButton();
+  showButtonTemporarily();
+</script>
+
+<!-- ROTATE NOTICE -->
+<div id="rotateNotice">
+  🔄 Silakan putar HP ke posisi <b>Landscape</b><br>
+  untuk pengalaman terbaik
+</div>
+
+<script>
+  const rotateNotice = document.getElementById("rotateNotice");
+
+  function handleOrientation() {
+    const isPortrait = window.innerHeight > window.innerWidth;
+
+    // Mobile only
+    if (window.matchMedia("(pointer: coarse)").matches) {
+      rotateNotice.style.display = isPortrait ? "flex" : "none";
+    } else {
+      rotateNotice.style.display = "none";
+    }
+  }
+
+  handleOrientation();
+  window.addEventListener("resize", handleOrientation);
+  window.addEventListener("orientationchange", handleOrientation);
+</script>
+
+
+</body>
+</html>
